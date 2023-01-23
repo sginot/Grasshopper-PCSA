@@ -30,5 +30,10 @@ pred_stress <- exp(pred_log_stress) # Exponential to convert back to real scale
 
 pred_stress_N_cm2 <- pred_stress * 1000 / 10000 # *1000 converts to N
                                                 # /10000 converts to cm^-2
+
 save(file = "muscle_stress.RData",
      list = c("pred_stress", "pred_stress_N_cm2"))
+# This independently computed average muscle stress value can be used to 
+# further compute muscle force estimates. Since only a few individuals of the
+# sample could have their sarcomere length measured, the average value will be
+# used for all specimens.

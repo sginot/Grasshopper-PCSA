@@ -253,6 +253,12 @@ dfBF <- data.frame(specimens = specimens,
            maxBF_nocorr, 
            maxBF_ampcorr, 
            maxBF_ampbasecorr)
+  # Data frame as is is not in the increasing order to to lack of 0 padding
 
+dfBF <- dfBF[c(1, 12, 23, 25:30, 2:11, 13:22, 24),]
+rownames(dfBF) <- 1:30
+  # Re-order table with increasing specimen numbers
 
 write.table(dfBF, file = "../bites/maxBF_clean.csv", row.names = F)
+  # The table is then pasted in the main measurements csv files 
+  # "measurments_Sch.csv", with Sch13 removed: outlier, no good bite measurement

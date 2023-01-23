@@ -78,6 +78,9 @@ R_fib <- unlist(ls_lgt[seq(from=2, to=20, by=2)])
 save(list = c("mat_mean", "mat_var", "L_fib", "R_fib"),
      file = "fiber_lengths_and_summary_stats.RData")
 
+  # mat_mean is also manually pasted into the main measurement file:
+  # "measurments_Sch.csv"
+
 #-------------------------------------------------------------------------------
 # Some plots (redundant with the figures script)
 

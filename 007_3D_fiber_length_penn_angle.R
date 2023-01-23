@@ -161,3 +161,6 @@ mat.penn[c(1, 4, 6, 9:12),] <- mat.penn[c(1, 4, 6, 9:12),
 
 save(list = c("mat.penn", "mat.length"), 
      file = "mat_fiber_lgt_angle.RData")
+
+# These matrices are also pasted in the main measurement csv table:
+# "measurments_Sch.csv"

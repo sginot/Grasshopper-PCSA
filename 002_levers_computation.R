@@ -1,7 +1,11 @@
 #-------------------------------------------------------------------------------
 
 # Calculating lever arms and mechanical advantage for S. gregaria mandibles
-# Data acquired by 3D landmarking in MorphoDig (Lebrun 2018)
+# Data acquired by 3D landmarking in MorphoDig (Lebrun 2018). Only specimens
+# Sch1 to Sch15 were Ct scanned and 3D reconstructed. Specimens Sch 16-Sch30
+# were dissected and therefore don't have associated 3D data. As such, values
+# for mechanical advantage used in the manuscript are averages computed for 
+# Sch1 to Sch15
 
 # Required libraries
 source("Rfunctions1.txt") 
@@ -138,6 +142,9 @@ mat.MA <- mat.MA[c(1,8:15,2:7),]
 # and must be reordered.
 
 mat.lev[c(4,6,9:12),] <- mat.lev[c(4,6,9:12), c(2,1,4,3)]
+  # An approximation of these lever lengths is used in the simplified 
+  # geometrical model of the Supplementary Information
+
 mat.MA[c(4,6,9:12),] <- mat.MA[c(4,6,9:12), c(2,1)]
 
 avg_MA_sides <- apply(mat.MA, 2, mean)
@@ -165,7 +172,7 @@ for (i in 1:dim(coords)[3]) {
   
   ins <- coords[8,,i] - mid_axis
   
-  angles[i,1] <- angle(tip,ins)*180/pi
+  angles[i,1] <- angle(tip, ins) * 180/pi
 }
 
 angles[c(4,6,9:12),] <- angles[c(4,6,9:12), c(2,1)]
@@ -173,3 +180,6 @@ angles[c(4,6,9:12),] <- angles[c(4,6,9:12), c(2,1)]
 avg_mand_angles <- apply(angles, 2, FUN = mean)
 
 avg_global <- mean(angles)
+
+  # This angle is there to check whether the simplified geometrical model 
+  # in the supplementary is not completely off!

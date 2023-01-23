@@ -41,7 +41,7 @@ for (i in 1:length(fil)) {
        type = "l")
   
   coords <- locator() # One must click on the repeated max gray value peaks
-                      # on the graph ! Then "Finish".
+                      # on the graph ! Then "Finish" in RStudio or right click.
   lengths <- diff(coords$x, lag = 1)
   
   ls_lengths[[i]] <- lengths
