@@ -98,8 +98,8 @@ N_BF <- c(length(na.omit(BF_dis)),
 # Make the actual plot
 pdf(file = paste(output_folder,
                  "Main_figure.pdf"), 
-    height = 10, 
-    width = 5)
+    height = 12, 
+    width = 7)
 
 layout(matrix(c(1:2, 3, 3, 4, 4), 
               ncol = 2, 
@@ -144,7 +144,7 @@ text(x = c(1,2.7), y = -0.5,
      srt = 20,
      xpd = T)
 
-text(x = 0.3, y = 3.7,
+text(x = 0.5, y = 3.9,
      labels = "A.", 
      cex = 2,
      font = 2)
@@ -335,9 +335,10 @@ abline(v = 2.5,
   # Add vertical lines to separate in vivo from dissection estimates from 
   # 3d estimates
 
-text(x = 0.5, y = 7,
+text(x = 0.3, y = 7,
      labels = "D.", 
      cex=2,
      font=2)
 
 dev.off()
+

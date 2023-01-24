@@ -165,7 +165,7 @@ mat.penn[c(1, 4, 6, 9:12),] <- mat.penn[c(1, 4, 6, 9:12),
 save(list = "ls.pennat",
      file = "pennation_angles.RData")
 save(list = "list_lgt_fib",
-     file = "fiber_legnths_3D.RData")
+     file = "fiber_lengths_3D.RData")
 
 save(list = c("mat.penn", "mat.length"), 
      file = "mat_fiber_lgt_angle.RData")
