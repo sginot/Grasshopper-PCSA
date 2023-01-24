@@ -275,7 +275,7 @@ BF_open_insertion <- PCSA_2_force(stress = sigma,
 #-------------------------------------------------------------------------------
 # Save all forces in one R object
 
-save(file = "all_BF_RData",
+save(file = "all_BF.RData",
      list = c("BF_open_dissec", 
               "BF_closed_dissec",
               "BF_open_VOL",

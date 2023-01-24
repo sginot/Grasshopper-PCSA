@@ -153,11 +153,19 @@ colnames(matpenn) <- c("angle_deg_L",
                         "angle_deg_R",
                         "cos_angle_R")
 
+ls.pennat <- ls.pennat[c(1:2, 15:30, 3:14)]
+  # Increasing order of individuals
+
 mat.penn <- matpenn[c(1, 8:15, 2:7), ] # Increasing order of individuals
 mat.length <- matlength[c(1, 8:15, 2:7), ]
 
 mat.penn[c(1, 4, 6, 9:12),] <- mat.penn[c(1, 4, 6, 9:12), 
                                         c(3:4,1:2)] # Correct for reversed sides
+
+save(list = "ls.pennat",
+     file = "pennation_angles.RData")
+save(list = "list_lgt_fib",
+     file = "fiber_legnths_3D.RData")
 
 save(list = c("mat.penn", "mat.length"), 
      file = "mat_fiber_lgt_angle.RData")
