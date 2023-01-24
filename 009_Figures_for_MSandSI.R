@@ -342,3 +342,84 @@ text(x = 0.3, y = 7,
 
 dev.off()
 
+#-------------------------------------------------------------------------------
+# Bite forces correlations biplot
+
+
+pdf(file = paste(output_folder, "Correlations_fig.pdf"),
+    width = 7, 
+    height = 7)
+
+par(mar = c(2,5,1,1))
+
+plot(BF_closed_dissec, 
+     BF_dis,
+     xlim = c(0, 8),
+     ylim = c(0.2, 2.2), 
+     pch=21, 
+     col = "black", 
+     bg = "red", 
+     cex = 2,
+     lwd = 2,
+     xaxt = "n",
+     xlab = "Estimated bite force (N)",
+     ylab = "In vivo bite force (N)",
+     cex.lab = 1.5)
+
+clip(0, 9, min(BF[16:30]),max(BF[16:30]))
+
+abline(lm(BF_dis~BF_closed_dissec), col="red", lwd = 3)
+
+clip(0,9, 0.2 ,2.2)
+
+abline(0,1, lty=2, lwd = 1.5, xpd=F)
+
+clip(0,9,0,3)
+
+points(BF_closed_VOL,
+       BF_3D,
+       pch = 22,
+       bg = "blue",
+       cex = 2,
+       lwd=2)
+
+points(BF_closed_2D3D,
+       BF_3D,
+       pch = 23,
+       bg = "purple",
+       cex = 2,
+       lwd=2)
+
+points(BF_closed_CH,
+       BF_3D, 
+       pch = 24,
+       bg = "darkorange",
+       cex = 2,
+       lwd=2)
+
+points(na.omit(BF_closed_insertion),
+       BF_3D,
+       pch = 25,
+       bg = "forestgreen",
+       cex = 2,
+       lwd=2)
+
+clip(0, 9, 
+     min(c(BF_dis, BF_3D), 
+         na.rm = T),
+     max(c(BF_dis, BF_3D), 
+         na.rm = T))
+
+abline(lm(BF_3D ~ BF_closed_2D3D),
+       col = "purple", 
+       lwd = 3)
+
+abline(lm(BF_3D ~ BF_closed_CH), 
+       col = "darkorange", 
+       lwd = 3)
+
+abline(lm(BF_3D ~ na.omit(BF_closed_insertion)), 
+       col="forestgreen", 
+       lwd = 3)
+
+dev.off()
