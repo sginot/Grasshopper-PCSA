@@ -1,0 +1,56 @@
+Species	Ref.	Body Region	Muscle	Mean	(SE)	Range	n	Mean	(SE)	Range	n	Method
+Cancer antennarius	1	chela crusher	dactyl closer	13.7	0.32	10.7-17.1	27	866	35	551-1182	24	vv,w,s
+Cancer branneri	1	chela crusher	dactyl closer	12.7	0.27	11.5-13.7	9	1032	62	713-1536	12	vv,w,s
+Cancer gracilis	1	chela crusher	dactyl closer	12.7	0.36	9.6-14.7	15	526	29	383-743	14	vv,w,s
+Cancer magister	1	chela crusher	dactyl closer	12.2	0.26	10-15.3	26	756	28	519-963	20	vv,w,s
+Cancer oregonensis	1	chela crusher	dactyl closer	16.5	0.36	14.2-17.1	9	1007	30	817-1346	21	vv,w,s
+Cancer productus	1	chela crusher	dactyl closer	16.1	0.26	14.4-17.8	13	792	60	421-1224	15	vv,w,s
+Cancer pagurus	2	chela crusher	dactyl closer	12.8	0.39	9-14	5	496	321	320-720	18	vt,w,c
+M. mercenaria	3	chela crusher	dactyl closer					1094	95	157-2187	26	vv,w,s
+M. mercenaria	3	chela cutter	dactyl closer					673	100		7	vv,w,s
+M. mercenaria	3	chela crusher	dactyl closer					711	135	110-1702	12	vv,w,s
+M. mercenaria	3	chela cutter	dactyl closer					896	90		6	vv,w,s
+Carcinus maenas	4	chela crusher	dactyl closer	13.1			2	667	580	286-1057	16	vt,w,e
+Carcinus maenas	4	chela cutter	dactyl closer	9.5			2	474	410	172-779	15	vt,w,e
+Macropipus spp	2	chela crusher	dactyl closer	8.9	0.23	7-9	4	275	422		6	vt,w,c
+Macropipus spp	2	chela cutter	dactyl closer	7.5	0.21	3-5	4	268	246		7	vt,w,c
+Callinectes sapidus	5	chela crusher	dactyl closer	11.2	0.03	6-15	3	638	178		18	vv,w,s
+Callinectes sapidus	5	chela cutter	dactyl closer	10.5	0.09	6-15	3	514	143		18	vv,w,s
+C. opilio	6	chela cutter	dactyl closer	10.4		4-17		552	24		12	vv,w,s
+C. opilio	6	chela cutter	dactyl closer	9.5		4-17		444	29		13	vv,w,s
+Homarus americanus	7,8	chela crusher	dactyl closer	7.6		6-10		302		253-390	3	vv,w,s
+Homarus americanus	7,8	chela cutter	dactyl closer	4.2		2-10		272		182-426	8	vv,w,s
+Cherax destructor	9	chela cutter	dactyl closer	8.6	0.11	6-10	49	305	17	100-571	49	vt,f,c
+Cherax destructor	9	chela cutter	dactyl closer	3.3	0.32	2-5	64	186	8	57-278	64	vt,f,c
+Astacus fluviatilis	10	walking leg	extensor	10.5	0.3			648		0-804		vt,f,c
+Homarus americanus	11	adominal	MSE	6.8	0.37	6-10	25	443	76		4	vt,b,c
+Homarus americanus	11	adominal	LDE	2.4	0.19	2-4.5	25	82	15		3	vt,b,c
+Homarus americanus	12,13	2nd antenna	Slow remotor	10.5		8-13	20	275				vt,w,e
+Schistocerca gregaria	15	hindwing flight	flight	3.9		3.1-4.1		157				vt,b,e
+Schistocerca gregaria	16	wing	metathoracic	3.9				295	23		12	vv,w,e
+Schistocera americana	17	wing	metathoracic	3.9				363	14		5	vv,w,e
+N. robustus	18	singing/wing	mesothoracic	3.3	0.3		3	109			7	vv,w,e
+N. robustus	18	wing	metathoracic	3.1	0.3		3	240			5	vv,w,e
+N. triops	18	singing/wing 	mesothoracic	3.3				124			6	vv,w,e
+N. triops	18	wing	metathoracic	3.1				214			6	vv,w,e
+Schistocerca gregaria	19,20	hind leg	Tibia extensor	11				705		660-750		vv,w,e
+Scyliorhinus canicula	21	postanal 	Myotomal white	2.6		2.3-2.8		241	22		7	vt,b,e
+Cyprinus carpio	22	mid-line myotomal	Myotomal red	2.1				116	4	102-125	5	vt,b,e
+Makaira nigricans	23	trunk myotomal	Myotomal white	2.3				176	2		13	vt,f,c
+Makaira nigricans	23	trunk myotomal	Myotomal red	2.3				57	9		11	vt,b,c
+Xenopus laevis	24	hind leg	IL (1N fibres)	2.3				396	54		10	vt,f,e
+Xenopus laevis	24	hind leg	IL (2S fibres)	2.3				337	38		12	vt,f,e
+Xenopus laevis	24	hind leg	IL (2F fibre)	2.3				312	36		6	vt,f,e
+Xenopus laevis	24	hind leg	IL (2N fibres)	2.3				300	49		8	vt,f,e
+Pseudemys scripta	25	hind leg	IL (fast glycolytic)	2.3				183	5		17	vt,f,s
+Pseudemys scripta	25	hind leg	IL (fast oxidative)	2.3				120	3		16	vt,f,s
+Pseudemys scripta	25	hind leg	IL (slow oxidative)	2.3				71	3		19	vt,f,s
+Rattus spp.	26	hind leg	EDL	2.5				209	10.7		8	vt,b,e
+Rattus spp.	26	hind leg	soleus	2.5				198	19		8	vt,b,e
+albino mice	27	extraocular inferior	rectus	2.6	0.12		6	102	11		6	vt,w,e
+albino mice	27	hind leg	EDL	3.1	0.14		6	249	10		6	vt,w,e
+albino mice	27	hind leg	soleus	2.8	0.08		6	177	22		6	vt,w,e
+albino mice	27	diaphram	hemidiaphram	2.7	0.09		6	211	9		6	vt,b,e
+Homo sapiens	28,29	hind leg	triceps surae	2.7				120	4	101-151	5	vv,w,s
+Homo sapiens	28,29	hind leg	quadriceps	2.7				239.4	8	191-277	5	vv,w,s
+Homo sapiens	28,29	hind leg	hip extensors	2.7				127.4	8	74-187	5	vv,w,s

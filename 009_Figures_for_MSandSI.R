@@ -10,13 +10,26 @@ library(scales)
 #-------------------------------------------------------------------------------
 # Read main data table and load data from previous scripts
 
-dat <- read.csv("measurments_Sch.csv", h=T, dec=".", sep=",")
+dat <- read.csv("measurments_Sch.csv", 
+                h = T, 
+                dec = ".",
+                sep = ",")
+
+dat_taylor <- read.csv("sarcomere_stress_data_Taylor_2001.csv",
+                       h = T,
+                       sep = "\t",
+                       dec = ".")
+
 load("all_BF.RData")
 load("fiber_lengths_and_summary_stats.RData")
 load("mat_fiber_lgt_angle.RData")
 load("PCSA_matrices.RData")
 load("pennation_angles.RData")
 load("fiber_legnths_3D.RData")
+load("mat_sarcomere_lengths_summary.RData")
+load("list_sarcomere_length_measurements.RData")
+load("models.RData")
+
 
 #-------------------------------------------------------------------------------
 # Set output folder for figures
@@ -345,50 +358,56 @@ dev.off()
 #-------------------------------------------------------------------------------
 # Bite forces correlations biplot
 
-
 pdf(file = paste(output_folder, "Correlations_fig.pdf"),
     width = 7, 
-    height = 7)
+    height = 14)
 
-par(mar = c(2,5,1,1))
+layout(matrix(1:2, nrow = 2))
+
+par(mar = c(5, 5, 1, 1))
 
 plot(BF_closed_dissec, 
      BF_dis,
      xlim = c(0, 8),
      ylim = c(0.2, 2.2), 
-     pch=21, 
+     pch = 21, 
      col = "black", 
      bg = "red", 
      cex = 2,
      lwd = 2,
-     xaxt = "n",
      xlab = "Estimated bite force (N)",
      ylab = "In vivo bite force (N)",
      cex.lab = 1.5)
 
-clip(0, 9, min(BF[16:30]),max(BF[16:30]))
+clip(0, 9, 
+     min(BF_dis, na.rm = T),
+     max(BF_dis, na.rm = T))
 
-abline(lm(BF_dis~BF_closed_dissec), col="red", lwd = 3)
+abline(lm(BF_dis ~ BF_closed_dissec), 
+       col = "red",
+       lwd = 3)
 
-clip(0,9, 0.2 ,2.2)
+clip(0, 9, 0.2 ,2.2)
 
-abline(0,1, lty=2, lwd = 1.5, xpd=F)
-
-clip(0,9,0,3)
+abline(0, 1, 
+       lty = 2, 
+       lwd = 1.5, 
+       xpd = F)
 
 points(BF_closed_VOL,
        BF_3D,
        pch = 22,
        bg = "blue",
        cex = 2,
-       lwd=2)
+       lwd=2, 
+       xpd = NA)
 
 points(BF_closed_2D3D,
        BF_3D,
        pch = 23,
        bg = "purple",
        cex = 2,
-       lwd=2)
+       lwd = 2)
 
 points(BF_closed_CH,
        BF_3D, 
@@ -405,10 +424,8 @@ points(na.omit(BF_closed_insertion),
        lwd=2)
 
 clip(0, 9, 
-     min(c(BF_dis, BF_3D), 
-         na.rm = T),
-     max(c(BF_dis, BF_3D), 
-         na.rm = T))
+     min(BF_3D, na.rm = T),
+     max(BF_3D, na.rm = T))
 
 abline(lm(BF_3D ~ BF_closed_2D3D),
        col = "purple", 
@@ -421,5 +438,286 @@ abline(lm(BF_3D ~ BF_closed_CH),
 abline(lm(BF_3D ~ na.omit(BF_closed_insertion)), 
        col="forestgreen", 
        lwd = 3)
+
+text(min(BF_closed_VOL, na.rm = T),
+     max(BF_dis, na.rm = T),
+     labels = "A.",
+     xpd = NA,
+     cex = 2,
+     font = 2,
+     pos = 2)
+
+# Bite forces correlations biplot with OPEN mandible estimates
+
+par(mar = c(5, 5, 1, 1))
+
+plot(BF_open_dissec, 
+     BF_dis,
+     xlim = c(0, 4.5),
+     ylim = c(0.2, 2.2), 
+     pch = 21, 
+     col = "black", 
+     bg = "red", 
+     cex = 2,
+     lwd = 2,
+     xlab = "Estimated bite force (N)",
+     ylab = "In vivo bite force (N)",
+     cex.lab = 1.5)
+
+clip(0, 9, 
+     min(BF_dis, na.rm = T),
+     max(BF_dis, na.rm = T))
+
+abline(lm(BF_dis ~ BF_open_dissec), 
+       col = "red",
+       lwd = 3)
+
+clip(0, 9, 0.2 ,2.2)
+
+abline(0, 1, 
+       lty = 2, 
+       lwd = 1.5, 
+       xpd = F)
+
+points(BF_open_VOL,
+       BF_3D,
+       pch = 22,
+       bg = "blue",
+       cex = 2,
+       lwd=2, 
+       xpd = NA)
+
+points(BF_open_2D3D,
+       BF_3D,
+       pch = 23,
+       bg = "purple",
+       cex = 2,
+       lwd = 2)
+
+points(BF_open_CH,
+       BF_3D, 
+       pch = 24,
+       bg = "darkorange",
+       cex = 2,
+       lwd=2)
+
+points(na.omit(BF_open_insertion),
+       BF_3D,
+       pch = 25,
+       bg = "forestgreen",
+       cex = 2,
+       lwd=2)
+
+clip(0, 9, 
+     min(BF_3D, na.rm = T),
+     max(BF_3D, na.rm = T))
+
+abline(lm(BF_3D ~ BF_open_2D3D),
+       col = "purple", 
+       lwd = 3)
+
+abline(lm(BF_3D ~ BF_open_CH), 
+       col = "darkorange", 
+       lwd = 3)
+
+abline(lm(BF_3D ~ na.omit(BF_open_insertion)), 
+       col="forestgreen", 
+       lwd = 3)
+
+text(min(BF_open_VOL, na.rm = T),
+     max(BF_dis, na.rm = T),
+     labels = "B.",
+     xpd = NA,
+     cex = 2,
+     font = 2,
+     pos = 2)
+
+clip(-5, 8, -1, 10)
+
+legend(-1, 2.72, 
+       legend = c("Volume estim.",
+                  "Dissection estim.",
+                  "2D-3D convex hull estim.",
+                  "Convex hull estim.",
+                  "Insertion area estim."),
+       pch = c(22,21,23:35),
+       pt.bg = c("blue", 
+                 "red", 
+                 "purple", 
+                 "darkorange", 
+                 "forestgreen"),
+       bty = "o",
+       bg = "white")
+
+dev.off()
+
+#-------------------------------------------------------------------------------
+# Allometry of in vivo bite force against head width, with sexual dimorphism
+
+lm_F <- lm(maxBF_ampbasecorr ~ HW, 
+           data = dat[which(dat$Sex == "F"),])
+
+lm_M <- lm(maxBF_ampbasecorr ~ HW, 
+           data = dat[which(dat$Sex == "M"),])
+
+pdf(file = paste(output_folder, "allometry_BF.pdf"),
+    width = 7, 
+    height = 7)
+
+plot(dat$HW, 
+     dat$maxBF_ampbasecorr, 
+     bg = c(4, 2)[as.factor(dat$Sex)],
+     pch = c(21, 22)[as.factor(dat$Sex)],
+     cex = 2,
+     lwd = 2,
+     xlab = "Head width (mm)",
+     ylab = "In vivo bite force (N)")
+
+clip(min(dat$HW[which(dat$Sex == "M")], 
+         na.rm = T),
+     max(dat$HW[which(dat$Sex == "M")], 
+         na.rm = T),
+     min(dat$maxBF_ampbasecorr[which(dat$Sex == "M")], 
+         na.rm = T),
+     max(dat$maxBF_ampbasecorr[which(dat$Sex == "M")], 
+         na.rm = T))
+
+abline(lm_M,
+       col = 2, 
+       lwd = 3)
+
+clip(min(dat$HW[which(dat$Sex == "F")], 
+         na.rm = T),
+     max(dat$HW[which(dat$Sex == "F")], 
+         na.rm = T),
+     min(dat$maxBF_ampbasecorr[which(dat$Sex == "F")], 
+         na.rm = T),
+     max(dat$maxBF_ampbasecorr[which(dat$Sex == "F")], 
+         na.rm = T))
+
+abline(lm_F,
+       col = 4,
+       lwd = 3)
+
+legend("topleft",
+       pch = c(21, 22),
+       pt.bg = c(4, 2),
+       legend = c(paste("Y =", 
+                        round(lm_F[[1]][2], 2),
+                        "* X", 
+                        round(lm_F[[1]][1], 2),
+                        "(females)"),
+                  paste("Y =", 
+                        round(lm_M[[1]][2], 2), 
+                        "* X", 
+                        round(lm_M[[1]][1], 2),
+                        "(males)")),
+       xpd = NA)
+
+dev.off()
+
+#-------------------------------------------------------------------------------
+# Sarcomere length model figure
+
+# Define variables of interest
+
+sarco_lgt <- dat_taylor$Mean
+  # Sarcomere length data from Taylor 2001
+
+stress <- dat_taylor$Mean.1
+  # Muscle stress data from Taylor 2001
+
+sarco_measured <- mat[, 1]
+  # Sarcomere length values obtained from Sch1 muscle fibers
+
+pred_stresses <- predict(object = mod, 
+                       newdata = data.frame(sarco_lgt = sarco_measured))
+  # Predict muscle stress values for measured sarcomere lengths, based on model
+  # from script 004 (Taylor's regression re-run).
+  # However, length and stress have an allometric, therefore non_linear relation
+  # therefore predictions based on linear regression on raw values are expected
+  # to be incorrect. Must use logarithmic scale
+
+log_mean_sarco <- log(mean(sarco_measured))
+  # Log of the average of measured sarcomere lengths
+
+pred_log_stress <- modlogs$coefficients[2] *
+  log_mean_sarco + modlogs$coefficients[1]
+  # Predict the log muscle stress values based on log mean measured sarcomere
+  # based on log-log regression of Taylor's data. In script 006, this predicted
+  # log stress value is converted back to natural scale using exp()
+
+pdf(file = paste(output_folder,
+                 "Reanalysis_Taylor_predict_stress.pdf"),
+    width = 12,
+    height = 7)
+
+layout(matrix(1:2, ncol = 2))
+
+plot(sarco_lgt, 
+     stress, 
+     pch = 19, 
+     cex = 1.5,
+     xlab = "Sarcomere lenght (µm)",
+     ylab = "Muscle stress (kN.m^-2)")
+
+abline(mod, 
+       lwd = 2)
+
+points(sarco_measured, 
+       pred_stresses,
+       pch = 22,
+       bg = "red", 
+       cex = 1.5)
+
+points(mean(sarco_measured), 
+       mean(pred_stresses),
+       pch = 22,
+       bg = "red", 
+       cex = 2.5,
+       lwd = 3)
+
+text(min(sarco_lgt, na.rm = T), 
+     max(stress, na.rm = T), 
+     labels = paste("Y =", 
+                    round(mod$coefficients[2], 2), 
+                    "* x +", 
+                    round(mod$coefficients[1], 2)),
+     pos = 4)
+
+plot(log(sarco_lgt), 
+     log(stress), 
+     pch = 19, 
+     cex = 1.5,
+     xlab = "log Sarcomere lenght (µm)",
+     ylab = "log Muscle stress (kN.m^-2)")
+
+abline(modlogs, 
+       lwd = 2)
+
+points(log_mean_sarco, 
+       pred_log_stress,
+       pch = 22,
+       bg = "red", 
+       cex = 2.5,
+       lwd = 3)
+
+lines(x = c(0, 
+            log_mean_sarco, 
+            log_mean_sarco),
+      y = c(pred_log_stress, 
+            pred_log_stress, 
+            0),
+      lwd = 2,
+      lty = 2,
+      col = "red")
+
+text(min(log(sarco_lgt), na.rm = T), 
+     max(log(stress), na.rm = T), 
+     labels = paste("Y =", 
+                    round(modlogs$coefficients[2], 2), 
+                    "* x +", 
+                    round(modlogs$coefficients[1], 2)),
+     pos = 4)
 
 dev.off()
