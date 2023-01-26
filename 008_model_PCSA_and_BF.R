@@ -12,7 +12,7 @@ library(scales)
 #-------------------------------------------------------------------------------
 # Open and load data
 
-dat <- read.csv("../measurments_Sch.csv", 
+dat <- read.csv("measurments_Sch.csv", 
                 h = T, 
                 dec = ".", 
                 sep = ",") 
