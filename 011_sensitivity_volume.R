@@ -260,4 +260,9 @@ for (i in 1:ncol(mat_bite_sensit)) {
 rownames(mat_lm_sensit2) <- colnames(mat_bite_sensit)
 colnames(mat_lm_sensit2) <- colnames(slm$coefficients)
   
-write.csv(x = "results_sensitivity_binarization.csv")
+write.csv(file = "results_sensitivity_binarization_test0.csv",
+          x = mat_lm_sensit)
+
+
+write.csv(file = "results_sensitivity_binarization_test1.csv",
+          x = mat_lm_sensit2)
