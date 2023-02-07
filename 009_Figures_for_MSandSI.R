@@ -431,13 +431,46 @@ abline(lm(BF_3D ~ BF_closed_2D3D),
        col = "purple", 
        lwd = 3)
 
+text(x = mean(BF_closed_2D3D, na.rm = T),
+     y = mean(BF_3D, na.rm = T),
+     pos = 4,
+     col = "purple",
+     font = 2,
+     cex = 1.5,
+     labels = round(lm(BF_3D ~ BF_closed_2D3D)$coef[2],2))
+
 abline(lm(BF_3D ~ BF_closed_CH), 
        col = "darkorange", 
        lwd = 3)
 
+text(x = mean(BF_closed_CH, na.rm = T),
+     y = mean(BF_3D, na.rm = T),
+     pos = 4,
+     col = "darkorange",
+     font = 2,
+     cex = 1.5,
+     labels = round(lm(BF_3D ~ BF_closed_CH)$coef[2],2))
+
 abline(lm(BF_3D ~ na.omit(BF_closed_insertion)), 
        col="forestgreen", 
        lwd = 3)
+
+text(x = mean(BF_closed_insertion, na.rm = T),
+     y = mean(BF_3D, na.rm = T),
+     pos = 4,
+     col = "forestgreen",
+     font = 2,
+     cex = 1.5,
+     labels = round(lm(BF_3D ~ na.omit(BF_closed_insertion))$coef[2],2))
+
+text(x = mean(BF_closed_dissec, na.rm = T),
+     y = mean(BF_dis, na.rm = T),
+     pos = 4,
+     col = "red",
+     font = 2,
+     cex = 1.5,
+     labels = round(lm(BF_dis ~ BF_closed_dissec)$coef[2],2))
+
 
 text(min(BF_closed_VOL, na.rm = T),
      max(BF_dis, na.rm = T),

@@ -155,7 +155,8 @@ ratio_RoL <- df_LR[1, seq(from = 2,
                          by = 2)]
 
 #-------------------------------------------------------------------------------
-# Comparisons of average in vivo and estimated (closed mandibles) forces
+# Comparisons of average in vivo and estimated (closed mandibles) forces as
+# reported in abstract
 
 mean(BF_closed_dissec, na.rm = T) / 
   mean(dat_dis$maxBF_ampbasecorr, na.rm = T)
@@ -170,8 +171,226 @@ mean(BF_closed_insertion, na.rm = T) /
   mean(dat_3D$maxBF_ampbasecorr, na.rm = T)
 
 #-------------------------------------------------------------------------------
+# Linear models of bite force against linear measurements
+
+summary(lm(BF ~ HW)) # Highest R2
+summary(lm(BF ~ HH)) # Lowest R2
+summary(lm(BF ~ HL))
+summary(lm(BF ~ TL))
+summary(lm(BF ~ PW))
+
+#-------------------------------------------------------------------------------
 # t tests of muscular traits and bite forces
+
+# Sexual dimorphism
+Fe <- which(dat$Sex == "F")
+Ma <- which(dat$Sex == "M")
+
+t.test(BF[Fe], 
+       BF[Ma])
+
+mean(BF[Fe], na.rm = T) / mean(BF[Ma], na.rm = T)
+
+
+t.test(HH[Fe], 
+       HH[Ma])
+
+mean(HH[Fe], na.rm = T) / mean(HH[Ma], na.rm = T)
+
+t.test(HW[Fe], 
+       HW[Ma])
+
+mean(HW[Fe], na.rm = T) / mean(HW[Ma], na.rm = T)
+
+t.test(HL[Fe], 
+       HL[Ma])
+
+mean(HL[Fe], na.rm = T) / mean(HL[Ma], na.rm = T)
+
+t.test(TL[Fe], 
+       TL[Ma])
+
+mean(TL[Fe], na.rm = T) / mean(TL[Ma], na.rm = T)
+
+t.test(PW[Fe], 
+       PW[Ma])
+
+mean(PW[Fe], na.rm = T) / mean(PW[Ma], na.rm = T)
+
+Anova(lm(BF ~ HW * dat$Sex))
+  # Anova in supplementary information
+
+# Left / Right asymmetry muscles dissected
+
+t.test(dat_dis$R_closer_g, 
+       dat_dis$L_closer_g,
+       paired = T)
+
+mean(dat_dis$R_closer_g/dat_dis$L_closer_g)
+
+t.test(R_fib,
+       L_fib)
+
+mean(R_fib) / mean(L_fib)
+
+t.test(PCSA_R_mm2, 
+       PCSA_L_mm2,
+       paired = T)
+
+mean(PCSA_R_mm2/PCSA_L_mm2,
+     na.rm = T)
+
+# Left / Right asymmetry 3D reconstructed muscles
+
+t.test(vol_R, 
+       vol_L,
+       paired = T)
+
+mean(vol_R/vol_L,
+     na.rm = T)
+
+t.test(CH2D3D_R, 
+       CH2D3D_L,
+       paired = T)
+
+mean(CH2D3D_R/CH2D3D_L,
+     na.rm = T)
+
+t.test(CH_R, 
+       CH_L,
+       paired = T)
+
+mean(CH_R/CH_L,
+     na.rm = T)
+
+t.test(fibR, 
+       fibL,
+       paired = F)
+
+mean(fibR, na.rm = T)/mean(fibL, na.rm = T)
+
+t.test(RP, 
+       LP,
+       paired = F)
+
+mean(RP, na.rm = T)/mean(LP, na.rm = T)
+
+t.test(PCSA_R_vol, 
+       PCSA_L_vol,
+       paired = T)
+
+mean(PCSA_R_vol/PCSA_L_vol,
+     na.rm = T)
+
+t.test(PCSA_R_2d3dCH, 
+       PCSA_L_2d3dCH,
+       paired = T)
+
+mean(PCSA_R_2d3dCH/PCSA_L_2d3dCH,
+     na.rm = T)
+
+t.test(PCSA_R_CH, 
+       PCSA_L_CH,
+       paired = T)
+
+mean(PCSA_R_CH/PCSA_L_CH,
+     na.rm = T)
+
+
+# 3D vs. dissec tests
+
+t.test(L_fib, fibL)
+
+t.test(R_fib, fibR)
+
+mean(R_fib)/mean(fibR)
+
+t.test(PCSA_L_mm2, PCSA_L_vol)
+
+mean(PCSA_L_mm2, na.rm = T) / mean(PCSA_L_vol, na = T)
+
+t.test(PCSA_R_mm2, PCSA_R_vol)
+
+mean(PCSA_R_mm2, na.rm = T) / mean(PCSA_R_vol, na = T)
+
+t.test(PCSA_L_mm2, PCSA_L_2d3dCH)
+
+mean(PCSA_L_2d3dCH, na = T) / mean(PCSA_L_mm2, na.rm = T)
+
+t.test(PCSA_R_mm2, PCSA_R_2d3dCH)
+
+mean(PCSA_R_2d3dCH, na = T) / mean(PCSA_R_mm2, na.rm = T)
+
+t.test(PCSA_L_mm2, PCSA_L_CH)
+
+mean(PCSA_L_CH, na = T) / mean(PCSA_L_mm2, na.rm = T)
+
+t.test(PCSA_R_mm2, PCSA_R_CH)
+
+mean(PCSA_R_CH, na = T) / mean(PCSA_R_mm2, na.rm = T)
+
+mean(PCSA_insert, na = T)
+
+mean(PCSA_insert, na = T) / mean(PCSA_R_mm2, na.rm = T)
+
+sd(PCSA_L_mm2, na.rm = T)
+sd(PCSA_R_mm2, na.rm = T)
+sd(PCSA_L_vol, na.rm = T)
+sd(PCSA_R_vol, na.rm = T)
+sd(PCSA_L_2d3dCH, na.rm = T)
+sd(PCSA_R_2d3dCH, na.rm = T)
+sd(PCSA_L_CH, na.rm = T)
+sd(PCSA_R_CH, na.rm = T)
+sd(PCSA_insert, na.rm = T)
+
+#-------------------------------------------------------------------------------
+# Comparisons bite forces
+
+t.test(BF_dis,
+       BF_3D)
+
+t.test(BF,
+       BF_open_dissec)
+
+t.test(BF,
+       BF_open_VOL)
+
+t.test(BF,
+       BF_closed_dissec)
+
+t.test(BF,
+       BF_closed_VOL)
+
+mean(BF_open_dissec, na.rm = T) / mean(BF, na.rm = T)
+
+mean(BF_open_VOL, na.rm = T) / mean(BF, na.rm = T)
+
+mean(BF_open_2D3D, na.rm = T) / mean(BF, na.rm = T)
+
+mean(BF_open_CH, na.rm = T) / mean(BF, na.rm = T)
+
+mean(BF_open_insertion, na.rm = T) / mean(BF, na.rm = T)
+
+mean(BF_closed_dissec, na.rm = T) / mean(BF, na.rm = T)
+
+mean(BF_closed_VOL, na.rm = T) / mean(BF, na.rm = T)
+
+mean(BF_closed_2D3D, na.rm = T) / mean(BF, na.rm = T)
+
+mean(BF_closed_CH, na.rm = T) / mean(BF, na.rm = T)
+
+mean(BF_closed_insertion, na.rm = T) / mean(BF, na.rm = T)
+
 
 #-------------------------------------------------------------------------------
 # Linear models of estimated vs. in vivo bite force.
 
+summary(lm(BF_3D ~ BF_closed_VOL))
+
+summary(lm(BF_dis ~ BF_closed_dissec))
+
+summary(lm(BF_3D ~ BF_closed_2D3D))
+
+summary(lm(BF_3D ~ BF_closed_CH))
+
+summary(lm(BF_3D ~ BF_closed_insertion[1:15]))
