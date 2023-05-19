@@ -27,7 +27,11 @@ stress <- dat_taylor$Mean.1
 # Analyse as done by Taylor 2001
 
 mod <- lm(stress ~ sarco_lgt)
-modlogs <- lm(log(stress) ~ log(sarco_lgt))
+
+logstress <- log(stress) 
+logsarco <- log(sarco_lgt)
+
+modlogs <- lm(logstress ~ logsarco)
 
 #-------------------------------------------------------------------------------
 # Save models for further analysis
