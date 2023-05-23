@@ -25,7 +25,7 @@ load("fiber_lengths_and_summary_stats.RData")
 load("mat_fiber_lgt_angle.RData")
 load("PCSA_matrices.RData")
 load("pennation_angles.RData")
-load("fiber_legnths_3D.RData")
+load("fiber_lengths_3D.RData")
 load("mat_sarcomere_lengths_summary.RData")
 load("list_sarcomere_length_measurements.RData")
 load("models.RData")
@@ -593,6 +593,26 @@ lm_F <- lm(maxBF_ampbasecorr ~ HW,
 lm_M <- lm(maxBF_ampbasecorr ~ HW, 
            data = dat[which(dat$Sex == "M"),])
 
+CIF <- confint(lm_F)
+CIM <- confint(lm_M)
+
+newF <- seq(from = min(dat$HW[which(dat$Sex == "F")]),
+            to = max(dat$HW[which(dat$Sex == "F")]),
+            by = 0.05)
+newM <- seq(from = min(dat$HW[which(dat$Sex == "M")], na.rm = T),
+            to = max(dat$HW[which(dat$Sex == "M")], na.rm = T),
+            by = 0.05)
+
+pCIF <- predict(lm_F, 
+                newdata = data.frame(HW = newF),
+                interval = "confidence",
+                level = 0.95)
+
+pCIM <- predict(lm_M, 
+                newdata = data.frame(HW = newM),
+                interval = "confidence",
+                level = 0.95)
+
 pdf(file = paste(output_folder, "allometry_BF.pdf"),
     width = 7, 
     height = 7)
@@ -604,7 +624,25 @@ plot(dat$HW,
      cex = 2,
      lwd = 2,
      xlab = "Head width (mm)",
-     ylab = "In vivo bite force (N)")
+     ylab = "In vivo bite force (N)",
+     xlim =c(5.9, 7.2),
+     ylim = c(-0.1, 2.5))
+
+polygon(c(newF, 
+          rev(newF)), 
+        c(pCIF[,2], 
+          rev(pCIF[,3])),
+        border = NA,
+        col = alpha(4,
+                    0.1))
+
+polygon(c(newM, 
+          rev(newM)), 
+        c(pCIM[,2], 
+          rev(pCIM[,3])),
+        border = NA,
+        col = alpha(2,
+                    0.1))
 
 clip(min(dat$HW[which(dat$Sex == "M")], 
          na.rm = T),
@@ -614,6 +652,10 @@ clip(min(dat$HW[which(dat$Sex == "M")],
          na.rm = T),
      max(dat$maxBF_ampbasecorr[which(dat$Sex == "M")], 
          na.rm = T))
+
+polygon(x = c(dat$HW[which(dat$Sex == "F")], 
+              rev(dat$HW[which(dat$Sex == "F")])),
+        y = c(pCIF[,2:3]))
 
 abline(lm_M,
        col = 2, 
@@ -637,13 +679,33 @@ legend("topleft",
        pt.bg = c(4, 2),
        legend = c(paste("Y =", 
                         round(lm_F[[1]][2], 2),
+                        "[",
+                        round(CIF[2, 1], 2),
+                        ";",
+                        round(CIF[2, 2], 2),
+                        "]",
                         "* X", 
                         round(lm_F[[1]][1], 2),
+                        "[",
+                        round(CIF[1, 1], 2),
+                        ";",
+                        round(CIF[1, 2], 2),
+                        "]",
                         "(females)"),
                   paste("Y =", 
-                        round(lm_M[[1]][2], 2), 
+                        round(lm_M[[1]][2], 2),
+                        "[",
+                        round(CIM[2, 1], 2),
+                        ";",
+                        round(CIM[2, 2], 2),
+                        "]",
                         "* X", 
                         round(lm_M[[1]][1], 2),
+                        "[",
+                        round(CIM[1, 1], 2),
+                        ";",
+                        round(CIM[1, 2], 2),
+                        "]",
                         "(males)")),
        xpd = NA)
 

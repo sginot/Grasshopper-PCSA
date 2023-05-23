@@ -17,16 +17,19 @@ pred_logstress <- predict(modlogs,
                        newdata = data.frame(logsarco=log_sarco),
                        interval = "prediction")
 
-pred_stress_intervals <- exp(pred_stress)
+pred_stress_intervals <- exp(pred_logstress)
 
 #-------------------------------------------------------------------------------
 # Make log-log regressions of RIGHT MUSCLE ONLY PCSA vs in vivo bite force
 
-BF_3D <- dat_3D$maxBF_ampbasecorr
-BF_dissec <- dat_dis$maxBF_ampbasecorr
+meanMA <- mean(dat$MA_R,
+               na.rm = T)
 
-lBF3D <- log(BF_3D)
-lBFdi <- log(BF_dissec)
+MF_3D <- dat_3D$maxBF_ampbasecorr / meanMA
+MF_dissec <- dat_dis$maxBF_ampbasecorr /meanMA
+
+lMF3D <- log(MF_3D)
+lMFdi <- log(MF_dissec)
 
 lAdi <- log(PCSA_R)
 lA2D3D <- log(PCSA_2D3D_R)
@@ -37,40 +40,40 @@ lAinsert <- log(insert)
 
 #Regression and log-log regression for dissected specimens
 
-rawdi <- lm(BF_dissec ~ PCSA_R)
+rawdi <- lm(MF_dissec ~ PCSA_R)
 CIdi <- confint(rawdi)
 
-loglogdi <- lm(lBFdi ~ lAdi)
+loglogdi <- lm(lMFdi ~ lAdi)
 CIlogdi <- confint(loglogdi)
 
 #Regression and log-log regression for 3D reconstructed specimens
 
   #Raw volume estimates
-rawvol <- lm(BF_3D ~ PCSA_vol_R)
+rawvol <- lm(MF_3D ~ PCSA_vol_R)
 CIvol <- confint(rawvol)
 
-loglogvol <- lm(lBF3D ~ lAvol)
+loglogvol <- lm(lMF3D ~ lAvol)
 CIlogvol <- confint(loglogvol)
 
   #2D3D volume estimates
-raw2D3D <- lm(BF_3D ~ PCSA_2D3D_R)
+raw2D3D <- lm(MF_3D ~ PCSA_2D3D_R)
 CI2D3D <- confint(raw2D3D)
 
-loglog2D3D <- lm(lBF3D ~ lA2D3D)
+loglog2D3D <- lm(lMF3D ~ lA2D3D)
 CIlog2D3D <- confint(loglog2D3D)
 
   #ConvexHull volume estimates
-rawCH <- lm(BF_3D ~ PCSA_CH_R)
+rawCH <- lm(MF_3D ~ PCSA_CH_R)
 CICH <- confint(rawCH)
 
-loglogCH <- lm(lBF3D ~ lACH)
+loglogCH <- lm(lMF3D ~ lACH)
 CIlogCH <- confint(loglogCH)
 
  #Insertion area estimates
-rawinsert <- lm(BF_3D ~ insert)
+rawinsert <- lm(MF_3D ~ insert)
 CIinsert <- confint(rawinsert)
 
-logloginsert <- lm(lBF3D ~ lAinsert)
+logloginsert <- lm(lMF3D ~ lAinsert)
 CIloginsert <- confint(logloginsert)
 
 #Make tables gathering estimates and their CI
@@ -93,6 +96,12 @@ slopes_CIs_loglog <- cbind(c(loglogdi$coefficients[2], CIlogdi[2,]),
                         c(loglogCH$coefficients[2], CIlogCH[2,]),
                         c(logloginsert$coefficients[2], CIloginsert[2,]))
 
+intercepts_CIs_loglog <- cbind(c(loglogdi$coefficients[1], CIlogdi[1,]),
+                           c(loglogvol$coefficients[1], CIlogvol[1,]),
+                           c(loglog2D3D$coefficients[1], CIlog2D3D[1,]),
+                           c(loglogCH$coefficients[1], CIlogCH[1,]),
+                           c(logloginsert$coefficients[1], CIloginsert[1,]))
+
 #Plot values and CIs against expectations
 #Intercept of raw regression is expected to be 0 (a muscle with PCSA = 0 
 # produces a force of 0)
@@ -100,59 +109,6 @@ slopes_CIs_loglog <- cbind(c(loglogdi$coefficients[2], CIlogdi[2,]),
 #known values from Taylor/literature
 #Slope of loglog regression is expected to be 1
 
-plot(intercepts_CIs[1,], 
-     ylim = c(min(intercepts_CIs),
-              max(intercepts_CIs)),
-     type = "n")
-
-for (i in 1:5) {
-  
-  polygon(x = c(i - 0.1, 
-                i + 0.1,
-                i + 0.1,
-                i - 0.1),
-          y = c(intercepts_CIs[c(2,2, 3,3), i]),
-          col = alpha("firebrick", 
-                                 0.5))
-}
-
-points(intercepts_CIs[1,], 
-     ylim = c(min(intercepts_CIs),
-              max(intercepts_CIs)),
-     cex = 5,
-     pch = 20)
-
-abline(h = 0,
-       lwd = 2,
-       lty = 2)
-
-####
-
-plot(slopes_CIs_loglog[1,], 
-     ylim = c(min(slopes_CIs_loglog),
-              max(slopes_CIs_loglog)),
-     type = "n")
-
-for (i in 1:5) {
-  
-  polygon(x = c(i - 0.1, 
-                i + 0.1,
-                i + 0.1,
-                i - 0.1),
-          y = c(slopes_CIs_loglog[c(2,2, 3,3), i]),
-          col = alpha("firebrick", 
-                                 0.5))
-}
-
-points(slopes_CIs_loglog[1,], 
-       ylim = c(min(slopes_CIs_loglog),
-                max(slopes_CIs_loglog)),
-       cex = 5,
-       pch = 20)
-
-abline(h = c(0, 1),
-       lwd = 2,
-       lty = 2)
 
 #-------------------------------------------------------------------------------
 # Three panel figure with 
@@ -276,12 +232,6 @@ polygon(x = c(0,7,7,0),
         col = "gray80",
         border = NA)
 
-polygon(x = c(0,7,7,0),
-        y = c(0.31, 0.31, 0.58, 0.58), 
-        #Values for closer muscle in insects from the literature
-        col = "gray60",
-        border = NA)
-
 for (i in 1:6) {
   
   lines(x = c(i, i),
@@ -300,11 +250,10 @@ abline(h = 0,
 
 legend("bottomright",
        legend = c("Muscle stress estimate, with 95% C.I.", 
-                  "0m1 muscle stress values from the literature",
-                  "Idem, excluding leaf-cutter ant and stag beetle"), 
-       pch = c(20, 22, 22),
-       lty = c(1, NA, NA),
-       pt.bg = c(NA, "grey80", "grey60"),
+                  "0m1 muscle stress values from the literature"), 
+       pch = c(20, 22),
+       lty = c(1, NA),
+       pt.bg = c(NA, "grey80"),
        pt.cex = 1.5,
        cex = 0.8)
 
@@ -314,3 +263,82 @@ legend("topleft",
        cex = 1.5)
 
 dev.off()
+
+#-------------------------------------------------------------------------------
+#Test for size-dependency of the shrinkage
+# Obtain the difference between 2D3D volume and raw volume then correlate the
+# difference with size
+
+shrinkR <- dat$PCSA_R_2d3dCH - dat$PCSA_R_vol
+shrinkL <- dat$PCSA_L_2d3dCH - dat$PCSA_L_vol
+
+
+shrinkR2 <- dat$PCSA_R_vol / dat$PCSA_R_2d3dCH
+shrinkL2 <- dat$PCSA_L_vol / dat$PCSA_L_2d3dCH
+
+modregR <- lm(shrinkR2 ~ dat$HW)
+modregL <- lm(shrinkL2 ~ dat$HW)
+
+summary(modregL)
+summary(modregR)
+
+
+layout(matrix(1:2, ncol = 2))
+
+plot(dat$HW,shrinkR2)
+abline(modregR, 
+       lwd = 2)
+
+plot(dat$HW,shrinkL2)
+abline(modregL,
+       lwd = 2)
+
+#-------------------------------------------------------------------------------
+# Anova of asymmetry vs measurement method
+
+PCSA_all <- c(dat$PCSA_L_mm2, 
+  dat$PCSA_L_vol, 
+  dat$PCSA_L_2d3dCH,
+  dat$PCSA_L_CH,
+  dat$PCSA_R_mm2, 
+  dat$PCSA_R_vol, 
+  dat$PCSA_R_2d3dCH,
+  dat$PCSA_R_CH)
+
+PCSA_relativediff <- c(dat$PCSA_L_mm2/dat$PCSA_R_mm2,
+                       dat$PCSA_L_vol/dat$PCSA_R_vol,
+                       dat$PCSA_L_2d3dCH/dat$PCSA_R_2d3dCH,
+                       dat$PCSA_L_CH/dat$PCSA_R_CH)
+
+sides <- as.factor(c(rep("L", length(PCSA_all)/2),
+                     rep("R", length(PCSA_all)/2)))
+
+metho <- as.factor(c(rep("diss", 35),
+                     rep("vol", 35),
+                     rep("2D3D", 35),
+                     rep("CH", 35)))
+
+df.methoasym <- data.frame(PCSA_all, 
+                           sides, 
+                           metho)
+
+df.metho2 <- data.frame(PCSA_relativediff,
+                        metho)
+
+df.methoasym <- na.omit(df.methoasym)
+
+df.metho2 <- na.omit(df.metho2)
+
+AOV.methoasym <- aov(lm(PCSA_all ~ sides * metho, 
+                        data = df.methoasym))
+
+TukeyHSD(x = AOV.methoasym)
+
+boxplot(df.methoasym$PCSA_all ~ df.methoasym$metho)
+
+AOV.metho2 <- aov(lm(PCSA_relativediff ~ metho, 
+                     data = df.metho2))
+
+TukeyHSD(x = AOV.metho2)
+
+boxplot(df.metho2$PCSA_relativediff ~ df.metho2$metho)
