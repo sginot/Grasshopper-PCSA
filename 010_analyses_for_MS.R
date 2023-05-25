@@ -296,8 +296,196 @@ t.test(PCSA_R_CH,
 mean(PCSA_R_CH/PCSA_L_CH,
      na.rm = T)
 
+#-------------------------------------------------------------------------------
+# Make tables for test results
 
-# 3D vs. dissec tests
+#Left Right tests
+
+mat_tests <- matrix(NA, 
+                    nrow = 11,
+                    ncol = 7)
+
+df_tests <- as.data.frame(mat_tests)
+
+funtest <- function(R, L, paired = T) {
+  
+  test <- t.test(R, 
+                 L,
+                 paired = paired)
+  
+  meanL <- round(mean(L,
+                      na.rm = T),
+                 3)
+  
+  sdL <- round(sd(L,
+                    na.rm = T),
+               3)
+  
+  meanR <- round(mean(R,
+                      na.rm = T),
+                 3)
+  
+  sdR <- round(sd(R,
+                    na.rm = T),
+               3)
+  
+  if (paired) {
+    
+    reldiff <- 100 * (round(mean(R/L,
+                          na.rm = T),
+                     3) - 1) 
+  } else {
+    
+    reldiff <- 100 * (round(mean(R, na.rm = T)/mean(L, na.rm = T),
+                     3) - 1)
+    }
+  
+  
+  tvalue <- round(test$statistic,
+                  3)
+  
+  DF <- round(test$parameter,
+              3)
+  
+  P <- round(test$p.value,
+             3)
+  
+data.frame(meanR = paste(meanR, " (", sdR, ")", sep = ""),
+           meanL = paste(meanL, " (", sdL, ")", sep = ""),
+           reldiff = reldiff,
+           paired = paired,
+           tvalue = tvalue,
+           DF = DF,
+           P = P)
+  }
+
+df_tests[1,] <- funtest(R_fib,
+                         L_fib, 
+                         paired = F)
+df_tests[2,] <- funtest(fibR,
+                         fibL, 
+                         paired = F)
+df_tests[3,] <- funtest(RP,
+                        LP, 
+                        paired = F)
+df_tests[4,] <- funtest(dat_dis$R_closer_g, 
+                         dat_dis$L_closer_g)
+df_tests[5,] <- funtest(vol_R, 
+                         vol_L)
+df_tests[6,] <- funtest(CH2D3D_R, 
+                         CH2D3D_L)
+df_tests[7,] <- funtest(CH_R, 
+                         CH_L)
+df_tests[8,] <- funtest(PCSA_R_vol, 
+                         PCSA_L_vol)
+df_tests[9,] <- funtest(PCSA_R_2d3dCH, 
+                         PCSA_L_2d3dCH)
+df_tests[10,] <- funtest(PCSA_R_CH, 
+                         PCSA_L_CH)
+df_tests[11,] <- funtest(PCSA_R_mm2, 
+                          PCSA_L_mm2)
+
+colnames(df_tests) <- c("Avg. Right (S.D.)", 
+                        "Avg. Left (S.D.)",
+                        "Relative R/L difference (%)",
+                        "Paired t-test",
+                        "t statistic",
+                        "d.f.",
+                        "P value")
+
+rownames(df_tests) <- c("Fiber length from dissection (mm)",
+                        "Fiber length from 3D reconstruction (mm)",
+                        "Fiber pennation angle from 3D reconstruction (degrees)",
+                        "Muscle weight from dissection (g)",
+                        "Muscle mesh volume, 3D (mm^3)",
+                        "Muscle 2D3D convex hull volume, 3D (mm^3)",
+                        "Muscle convex hull volume, 3D (mm^3)",
+                        "Muscle PCSAeff derived from mesh volume (mm^2)",
+                        "Muscle PCSAeff derived from 2D3D convex hull volume (mm^2)",
+                        "Muscle PCSAeff derived from convex hull volume (mm^2)",
+                        "Muscle PCSAeff derived from dissected muscle weight (mm^2)")
+
+output_folder <- "../Reresubmission/"
+
+write.table(format(df_tests, digits = 4),
+            file = paste(output_folder, 
+                         "T_TESTS_ASYM.csv",
+                         sep = ""),
+            sep = "\t",
+            row.names = T,
+            col.names = T)
+
+# Dissec vs 3D Methods comparison tests
+
+mat_tests_dis_vs_3D <- matrix(NA, 
+                    nrow = 10,
+                    ncol = 7)
+
+df_tests_dis_vs_3D <- as.data.frame(mat_tests_dis_vs_3D)
+
+df_tests_dis_vs_3D[1, ] <- funtest(L_fib, 
+                                   fibL, 
+                                   paired = F)
+
+df_tests_dis_vs_3D[2, ] <- funtest(R_fib, 
+                                   fibR, 
+                                   paired = F)
+
+df_tests_dis_vs_3D[3, ] <- funtest(PCSA_L_mm2, 
+                                   PCSA_L_vol, 
+                                   paired = F)
+
+df_tests_dis_vs_3D[4, ] <- funtest(PCSA_R_mm2, 
+                                   PCSA_R_vol, 
+                                   paired = F)
+
+df_tests_dis_vs_3D[5, ] <- funtest(PCSA_L_mm2, PCSA_L_2d3dCH, 
+                                   paired = F)
+
+df_tests_dis_vs_3D[6, ] <- funtest(PCSA_R_mm2, PCSA_R_2d3dCH, 
+                                   paired = F)
+
+df_tests_dis_vs_3D[7, ] <- funtest(PCSA_L_mm2, PCSA_L_CH, 
+                                   paired = F)
+
+df_tests_dis_vs_3D[8, ] <- funtest(PCSA_R_mm2, PCSA_R_CH, 
+                                   paired = F)
+
+df_tests_dis_vs_3D[9, ] <- funtest(PCSA_L_mm2, PCSA_insert, 
+                                   paired = F)
+
+df_tests_dis_vs_3D[10, ] <- funtest(PCSA_R_mm2, PCSA_insert, 
+                                   paired = F)
+
+colnames(df_tests_dis_vs_3D) <- c("Avg. Dissection (S.D.)", 
+                        "Avg. 3D (S.D.)",
+                        "Relative Dissection/3D difference (%)",
+                        "Paired t-test",
+                        "t statistic",
+                        "d.f.",
+                        "P value")
+
+rownames(df_tests_dis_vs_3D) <- c("[Left] dissection vs. 3D fiber length (mm)",
+                                  "[Right] dissection vs. 3D right fiber length (mm)",
+                                  "[Left] dissection vs. muscle mesh volume derived PCSA (mm^2)",
+                                  "[Right] dissection vs. muscle mesh volume derived PCSA (mm^2)",
+                                  "[Left] dissection vs. 2D3D convex hull derived PCSA (mm^2)",
+                                  "[Right] dissection vs. 2D3D convex hull derived PCSA (mm^2)",
+                                  "[Left] dissection vs. convex hull derived PCSA (mm^2)",
+                                  "[Right] dissection vs. convex hull derived PCSA (mm^2)",
+                                  "[Left] dissection vs. insertion area derived PCSA (mm^2)",
+                                  "[Right] dissection vs. insertion area derived PCSA (mm^2)")
+
+output_folder <- "../Reresubmission/"
+
+write.table(format(df_tests_dis_vs_3D, digits = 4),
+            file = paste(output_folder, 
+                         "T_TESTS_METHODS.csv",
+                         sep = ""),
+            sep = "\t",
+            row.names = T,
+            col.names = T)
+
 
 t.test(L_fib, fibL)
 

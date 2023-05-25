@@ -224,6 +224,7 @@ PCSAs <- dat[, c(grep("PCSA", colnames(dat)), grep("insert", colnames(dat)))]
 PCSAs <- PCSAs[, -grep("_L_", colnames(PCSAs))]
 
 PCSAs[, 3:4] <- PCSAs[, 4:3]
+colnames(PCSAs)[3:4] <- colnames(PCSAs)[4:3]
 
 PCSAs[, 5] <- PCSAs[, 5] / 2
 
@@ -285,7 +286,7 @@ for (i in 1:5) {
           border = NA,
           col = alpha(pal[i], alpha = 0.2))
   
-  legend("topright",
+  legend("bottomright",
          bty = "n",
          legend = paste("Y = ", 
                               round(ls.reg$raw[[1]][2], 2),
@@ -328,7 +329,7 @@ for (i in 1:5) {
           border = NA,
           col = alpha(pal2[i], alpha = 0.2))
   
-  legend("bottomright",
+  legend("topright",
          bty = "n",
          legend = paste("Y = ", 
                         round(ls.reg$raw[[1]][2], 2),
@@ -349,7 +350,7 @@ for (i in 1:5) {
          cex = 1.2)
   
   ls.reg <- stress.reg.fun(x = PCSAs[, i],
-                           force = BF * meanMA)
+                           force = BF / meanMA)
   
   plot(1,1,
        type = "n",
@@ -373,7 +374,7 @@ for (i in 1:5) {
           border = NA,
           col = alpha(pal[i], alpha = 0.2))
   
-  legend("topright",
+  legend("bottomright",
          bty = "n",
          legend = paste("Y = ", 
                         round(ls.reg$loglog[[1]][2], 2),
@@ -399,7 +400,7 @@ for (i in 1:5) {
          cex = 2)
   
   ls.reg <- stress.reg.fun(x = PCSAs[, i],
-                           force = BF * meanMAeff)
+                           force = BF / meanMAeff)
   
   points(ls.reg$logx, 
          ls.reg$logforce,
@@ -416,7 +417,7 @@ for (i in 1:5) {
           border = NA,
           col = alpha(pal2[i], alpha = 0.2))
   
-  legend("bottomright",
+  legend("topright",
          bty = "n",
          legend = paste("Y = ", 
                         round(ls.reg$loglog[[1]][2], 2),
