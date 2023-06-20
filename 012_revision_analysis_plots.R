@@ -772,3 +772,18 @@ AOV.metho2 <- aov(lm(PCSA_relativediff ~ metho,
 TukeyHSD(x = AOV.metho2)
 
 boxplot(df.metho2$PCSA_relativediff ~ df.metho2$metho)
+
+#-------------------------------------------------------------------------------
+# Fiber diameter comparison
+
+diam_3D <- read.csv("fiber_diameter_Sch1_slice493.csv")
+diam_dis <- read.csv("fiber_diameter_Sch16_image006.csv")
+
+d3d <- diam_3D$Length
+ddis <- diam_dis$Length
+
+av.d3d <- mean(d3d)
+sd.d3d <- sd(d3d)
+
+av.ddis <- mean(ddis)
+sd.ddis <- sd(ddis)
