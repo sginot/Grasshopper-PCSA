@@ -113,13 +113,22 @@ pdf(file = paste(output_folder,
                  "Main_figure.pdf"), 
     height = 12, 
     width = 7)
+#pdf(file = paste(output_folder, #This is for the the reduced figure of final MS
+#                 "Main_figure.pdf"), 
+#    height = 9, 
+#    width = 7)
 
-layout(matrix(c(1:2, 3, 3, 4, 4), 
+layout(matrix(c(1, 2, 3, 3, 4, 4), 
               ncol = 2, 
               nrow = 3, 
               byrow = T))
 
-par(mar=c(4, 4.5, 1, 1))
+#layout(matrix(c(1, 2, 3, 3),  #This is for the the reduced figure of final MS
+#              ncol = 2, 
+#              nrow = 2, 
+#              byrow = T))
+
+par(mar=c(4, 5, 1, 1))
 
 boxplot(L_fib, R_fib, fibL, fibR,
         col = c("darkorange", "darkorchid4"),
@@ -279,6 +288,7 @@ text(x = 0.5,
      cex = 2,
      font = 2)
 
+# dev.off() STOP HERE FOR THE FIGURE IN THE FINAL VERSION OF THE MS
 
 boxplot(BF_dis,
         BF_3D,
