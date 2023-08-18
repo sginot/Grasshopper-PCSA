@@ -582,3 +582,56 @@ summary(lm(BF_3D ~ BF_closed_2D3D))
 summary(lm(BF_3D ~ BF_closed_CH))
 
 summary(lm(BF_3D ~ BF_closed_insertion[1:15]))
+
+#-------------------------------------------------------------------------------
+# Allometric relationships between bite force and all length measurements
+
+modalloHW <- lm(log(BF) ~ log(HW))
+CIalloHW <- confint(modalloHW)
+
+modalloHL <- lm(log(BF) ~ log(HL))
+CIalloHL <- confint(modalloHL)
+
+modalloHH <- lm(log(BF) ~ log(HH))
+CIalloHH <- confint(modalloHH)
+
+modalloPW <- lm(log(BF) ~ log(PW))
+CIalloPW <- confint(modalloPW)
+
+modalloTL <- lm(log(BF) ~ log(TL))
+CIalloTL <- confint(modalloTL)
+
+#Splitting sexes
+
+Sex <- as.factor(dat$Sex)
+
+modalloHHF <- lm(log(BF)[which(Sex == "F")] ~ log(HH)[which(Sex == "F")])
+CIalloHHF <- confint(modalloHHF)
+
+modalloHWF <- lm(log(BF)[which(Sex == "F")] ~ log(HW)[which(Sex == "F")])
+CIalloHWF <- confint(modalloHWF)
+
+modalloHLF <- lm(log(BF)[which(Sex == "F")] ~ log(HL)[which(Sex == "F")])
+CIalloHLF <- confint(modalloHLF)
+
+modalloPWF <- lm(log(BF)[which(Sex == "F")] ~ log(PW)[which(Sex == "F")])
+CIalloPWF <- confint(modalloPWF)
+
+modalloTLF <- lm(log(BF)[which(Sex == "F")] ~ log(TL)[which(Sex == "F")])
+CIalloTLF <- confint(modalloTLF)
+
+
+modalloHHM <- lm(log(BF)[which(Sex == "M")] ~ log(HH)[which(Sex == "M")])
+CIalloHHM <- confint(modalloHHM)
+
+modalloHWM <- lm(log(BF)[which(Sex == "M")] ~ log(HW)[which(Sex == "M")])
+CIalloHWM <- confint(modalloHWM)
+
+modalloHLM <- lm(log(BF)[which(Sex == "M")] ~ log(HL)[which(Sex == "M")])
+CIalloHLM <- confint(modalloHLM)
+
+modalloPWM <- lm(log(BF)[which(Sex == "M")] ~ log(PW)[which(Sex == "M")])
+CIalloPWM <- confint(modalloPWM)
+
+modalloTLM <- lm(log(BF)[which(Sex == "M")] ~ log(TL)[which(Sex == "M")])
+CIalloTLM <- confint(modalloTLM)

@@ -100,3 +100,6 @@ avg_global <- mean(unlist(ls_lengths))
 
 hist(unlist(ls_lengths))
 abline(v = avg_global)
+
+t.test(unlist(ls_lengths[which(grepl(fil, pattern = "LEFT"))]), 
+       unlist(ls_lengths[which(grepl(fil, pattern = "RIGHT"))]))
