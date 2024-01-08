@@ -366,6 +366,186 @@ text(x = 0.3, y = 7,
 dev.off()
 
 #-------------------------------------------------------------------------------
+#One column version
+
+pdf(file = paste(output_folder,
+                 "Main_figure2.pdf"), 
+    height = 12, 
+    width = 4.5)
+
+layout(matrix(c(1, 2, 3), 
+              ncol = 1, 
+              nrow = 3, 
+              byrow = T))
+
+#layout(matrix(c(1, 2, 3, 3),  #This is for the the reduced figure of final MS
+#              ncol = 2, 
+#              nrow = 2, 
+#              byrow = T))
+
+par(mar=c(4, 4.5, 1, 1))
+
+boxplot(L_fib, R_fib, fibL, fibR,
+        col = c("darkorange", "darkorchid4"),
+        pch = 20,
+        cex=2,
+        lwd=2,
+        at = c(0.7, 1.3, 2.4,3),
+        boxwex = 0.5,
+        xaxt = "n",
+        ylab = "Fiber length (mm)", 
+        cex.lab=1.5,
+        ylim = c(0, 4))
+# Boxplots of fiber lengths, with left/right muscles as different colors, and
+# comparison between microdissected fibers and 3D landmarked fibers (separated
+# by a large space).
+
+text(x = c(0.7, 1.3, 2.4,3), 
+     y = rep(0.2, 4),
+     labels = c(length(L_fib), 
+                length(R_fib), 
+                length(fibL),
+                length(fibR)),
+     cex = 1.2,
+     font = 2)
+# Add number of individual fibers at the bottom of each box
+
+axis(side = 1,
+     at = c(1,2.7),
+     labels = F)
+
+text(x = c(1,2.7), y = -0.5,
+     labels = c("Dissection", 
+                "3D (landmarks)"), 
+     cex = 1.5,
+     srt = 20,
+     xpd = T)
+
+text(x = 0.5, y = 3.9,
+     labels = "A.", 
+     cex = 2,
+     font = 2)
+# Add custom x axis
+
+plot(DRP, 
+     main = "", 
+     xlab = "Pennation angle (degrees)", 
+     ylim = c(0, max(DLP$y)), 
+     cex.lab = 1.5)
+# Plot density curves of pennation angles (obtained from 3D landmarked)
+
+polygon(DLP$x, 
+        DLP$y, 
+        col = alpha("darkorange", 0.5), 
+        lwd=3)
+
+polygon(DRP$x, 
+        DRP$y, 
+        col = alpha("darkorchid4", 0.5), 
+        lwd = 3)
+# Add transparent colors to the density curves
+
+abline(v = mean(DRP$x), 
+       col = "darkorchid4", 
+       lty = 2, 
+       lwd = 2)
+
+abline(v = mean(DLP$x), 
+       col = "darkorange", 
+       lty = 2, 
+       lwd = 2)
+# Add vertical lines at the respective left and right averages
+
+text(c(mean(DRP$x), mean(DLP$x)),
+     c(0.002, 0.002),
+     labels = c(DRP$n, DLP$n),
+     pos = c(4, 2),
+     font = 2,
+     col = c("darkorchid4", "darkorange"),
+     cex = 1.2)
+# Add sample size (number of fibers)
+
+text(x = 0, y = 0.042,
+     labels = "B.", 
+     cex=2,
+     font=2)
+
+par(mar=c(5,4.5,1,1))
+# Change margins for the next panel
+
+boxplot(PCSA_L_mm2,
+        PCSA_R_mm2,
+        PCSA_L_vol,
+        PCSA_R_vol,
+        PCSA_L_2d3dCH,
+        PCSA_R_2d3dCH,
+        PCSA_L_CH,
+        PCSA_R_CH,
+        PCSA_insert,
+        col = c(rep(c("darkorange", 
+                      "darkorchid4"), 
+                    4),
+                "grey"),
+        ylim = c(0, 19),
+        pch = 20,
+        cex = 2,
+        lwd = 2,
+        boxwex = 0.8,
+        at = c(0.8,1.7, 2.8,3.7, 4.8,5.7, 6.8,7.7, 9.25),
+        xaxt = "n",
+        ylab = "Area (mm^2)", 
+        cex.lab = 1.5)
+# Boxplot of the various estimates of PCSA
+
+text(c(0.8,1.7, 2.8,3.7, 4.8,5.7, 6.8,7.7, 9.25),
+     rep(0, 9),
+     labels = N_PCSA,
+     font = 2,
+     cex = 1.2)
+# Add sample sizes
+
+axis(side = 1,
+     at = c(1.25, 3.25, 5.25, 7.25, 9.25),
+     labels = F)
+
+text(x = c(0.5, 2.5, 4.5, 6.5, 8.5),
+     y = -2.8,
+     labels = c("PCSA", 
+                "PCSA 3D",
+                "PCSA 2D-3D",
+                "PCSA 3D",
+                "PCSA"),
+     srt = 20,
+     xpd = T, 
+     cex = 1.3)
+
+text(x = c(1, 3, 5, 7, 9),
+     y = -3.2,
+     labels = c("dissection", 
+                "volume",
+                "convex hull",
+                "convex hull",
+                "muscle insertion"),
+     srt = 20,
+     xpd = T, 
+     cex = 1.3)
+# Add labels: some manual adjustments are necessary depending on the 
+# dimensions of the figure
+
+abline(v = 2.5, 
+       lwd = 2, 
+       lty = 2, 
+       xpd = F)
+
+text(x = 1.5,
+     y = 18,
+     labels = "C.", 
+     cex = 2,
+     font = 2)
+
+dev.off() 
+
+#-------------------------------------------------------------------------------
 # Bite forces correlations biplot
 
 pdf(file = paste(output_folder, "Correlations_fig.pdf"),
